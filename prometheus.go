@@ -185,6 +185,23 @@ var (
 		Help: "Number of errors by script name",
 	}, []string{"script_name"},
 	)
+
+	// New Per Host Metrics
+	zoneRequestHost = promauto.NewCounterVec(prometheus.CounterOpts{
+		Name: "cloudflare_zone_requests_host",
+		Help: "Requests per zone per host",
+	}, []string{"zone", "host"},
+	)
+	zoneUniquesHost = promauto.NewCounterVec(prometheus.CounterOpts{
+		Name: "cloudflare_zone_uniques_host",
+		Help: "Uniques per zone per host",
+	}, []string{"zone", "host"},
+	)
+	zoneThreatsHost = promauto.NewCounterVec(prometheus.CounterOpts{
+		Name: "cloudflare_zone_threats_host",
+		Help: "Threats per zone per host",
+	}, []string{"zone", "host"},
+	)
 )
 
 func fetchWorkerAnalytics(account cloudflare.Account, wg *sync.WaitGroup) {
@@ -288,6 +305,7 @@ func addHTTPGroups(z *zoneResp, name string) {
 
 	// Uniques
 	zoneUniquesTotal.With(prometheus.Labels{"zone": name}).Add(float64(zt.Unique.Uniques))
+
 }
 
 func addFirewallGroups(z *zoneResp, name string) {
@@ -346,5 +364,13 @@ func addHTTPAdaptiveGroups(z *zoneResp, name string) {
 				"host":    g.Dimensions.ClientRequestHTTPHost,
 			}).Add(float64(g.Count))
 	}
+	// New per host metrics
 
+	for _, g := range z.HTTPRequestsAdaptiveGroups {
+		zoneRequestHost.With(
+			prometheus.Labels{
+				"zone": name,
+				"host": g.Dimensions.ClientRequestHTTPHost,
+			}).Add(float64(g.Count))
+	}
 }

@@ -1,8 +1,6 @@
 # CloudFlare Prometheus exporter
-
-[<img src="ll-logo.png">](https://lablabs.io/)
-
-We help companies build, run, deploy and scale software and infrastructure by embracing the right technologies and principles. Check out our website at https://lablabs.io/
+This is a fork of the Labyrinth Labs CloudFlare Prometheus exporter.
+Check out their website at https://lablabs.io/
 
 ---
 
@@ -90,6 +88,12 @@ The original method of zone filtering by using env variables `ZONE_<name>` is no
 # HELP cloudflare_zone_threats_total Threats per zone
 # HELP cloudflare_zone_uniques_total Uniques per zone
 ```
+### Metrics added by this Fork:
+```
+# HELP cloudflare_zone_requests_host Requests per zone per host
+# HELP cloudflare_zone_threats_host Threats per zone per host
+# HELP cloudflare_zone_uniques_host Uniques per zone per host
+```
 
 
 ## Docker
@@ -98,28 +102,28 @@ The original method of zone filtering by using env variables `ZONE_<name>` is no
 
 ### Build
 
-Images are available at [Dockerhub](https://hub.docker.com/r/lablabs/cloudflare_exporter)
+Images are available at [Dockerhub](https://hub.docker.com/r/alex0/cloudflare_exporter)
 
 ```
-docker build -t lablabs/cloudflare_exporter .
+docker build -t alex0/cloudflare_exporter .
 ```
 
 ### Run
 
 ```
-docker run --rm -p 8080:8080 -e CF_API_KEY=${CF_API_KEY} -e CF_API_EMAIL=${CF_API_EMAIL} lablabs/cloudflare_exporter
+docker run --rm -p 8080:8080 -e CF_API_KEY=${CF_API_KEY} -e CF_API_EMAIL=${CF_API_EMAIL} alex0/cloudflare_exporter
 ```
 or
 ```
-docker run --rm -p 8080:8080 -e CF_API_TOKEN=${CF_API_TOKEN} lablabs/cloudflare_exporter
+docker run --rm -p 8080:8080 -e CF_API_TOKEN=${CF_API_TOKEN} alex0/cloudflare_exporter
 ```
 or example with selected zones and listen port
 ```
-docker run --rm -p 8080:8081 -e CF_API_TOKEN=${CF_API_TOKEN} -e CF_ZONES=zoneid1,zoneid2,zoneid3 -e LISTEN=:8081 lablabs/cloudflare_exporter
+docker run --rm -p 8080:8081 -e CF_API_TOKEN=${CF_API_TOKEN} -e CF_ZONES=zoneid1,zoneid2,zoneid3 -e LISTEN=:8081 alex0/cloudflare_exporter
 ```
 help
 ```
-docker run --rm -p 8080:8080 -i lablabs/cloudflare_exporter --help
+docker run --rm -p 8080:8080 -i alex0/cloudflare_exporter --help
 ```
 ## Contributing and reporting issues
 
