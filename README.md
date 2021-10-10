@@ -91,8 +91,6 @@ The original method of zone filtering by using env variables `ZONE_<name>` is no
 ### Metrics added by this Fork:
 ```
 # HELP cloudflare_zone_requests_host Requests per zone per host
-# HELP cloudflare_zone_threats_host Threats per zone per host
-# HELP cloudflare_zone_uniques_host Uniques per zone per host
 ```
 
 
